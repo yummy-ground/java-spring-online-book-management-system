@@ -1,0 +1,14 @@
+spring.config.activate.on-profile:
+  - prod
+  - dev
+  - local
+  - test
+jwt:
+  secret:
+    access-token: ${JWT_ACCESS_TOKEN_SECRET}
+    refresh-token: ${JWT_REFRESH_TOKEN_SECRET}
+  expiration:
+    access-token: ${JWT_ACCESS_TOKEN_EXPIRATION}
+    refresh-token: ${JTW_REFRESH_TOKEN_EXPIRATION}
+  issuer:
+    name: ${JWT_ISSUER_NAME}
