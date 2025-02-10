@@ -28,6 +28,13 @@ spring:
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      data-locations: classpath:sql/init_data.sql
 
 ---
 spring.config.activate.on-profile: test
