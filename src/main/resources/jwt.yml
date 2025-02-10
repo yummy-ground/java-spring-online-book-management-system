@@ -9,6 +9,6 @@ jwt:
     refresh-token: ${JWT_REFRESH_TOKEN_SECRET}
   expiration:
     access-token: ${JWT_ACCESS_TOKEN_EXPIRATION}
-    refresh-token: ${JTW_REFRESH_TOKEN_EXPIRATION}
+    refresh-token: ${JWT_REFRESH_TOKEN_EXPIRATION}
   issuer:
     name: ${JWT_ISSUER_NAME}
