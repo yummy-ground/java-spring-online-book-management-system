@@ -1,7 +1,5 @@
 package yummy_ground.yummygyudon.obms.system.auth;
 
-import java.io.IOException;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,18 +13,17 @@ import yummy_ground.yummygyudon.obms.system.value.JwtProperty;
 
 @Component
 @RequiredArgsConstructor
-public class AccessTokenManager extends JwtManager<CustomUserAuthentication> {
-    private static final String CLAIM_KEY_USER_ID = "user_id";
+public class RefreshTokenManager extends JwtManager<String> {
     private final JwtProperty jwtProperty;
 
     @Override
-    public String generate(CustomUserAuthentication authentication) {
+    public String generate(String data) {
         String issuer = jwtProperty.issuer().name();
-        String key = jwtProperty.secret().accessToken();
-        long expiration = Long.parseLong(jwtProperty.expiration().accessToken());
+        String key = jwtProperty.secret().refreshToken();
+        long expiration = Long.parseLong(jwtProperty.expiration().refreshToken());
         return Jwts.builder()
                 .setHeader(createHeader())
-                .claim(CLAIM_KEY_USER_ID, String.valueOf(authentication.getPrincipal()))
+                .setSubject(data)
                 .setIssuer(issuer)
                 .setIssuedAt(createIssuedAt())
                 .setExpiration(createExpiration(expiration))
@@ -35,12 +32,11 @@ public class AccessTokenManager extends JwtManager<CustomUserAuthentication> {
     }
 
     @Override
-    public CustomUserAuthentication parse(String token) throws JwtException, IOException {
+    public String parse(String token) throws JwtException {
         String key = jwtProperty.secret().accessToken();
-        Claims claims = getClaimsFromToken(token, key);
+        Claims tokenClaims = getClaimsFromToken(token, key);
 
-        long userId = claims.get(CLAIM_KEY_USER_ID, Long.class);
-        return new CustomUserAuthentication(userId, null);
+        return tokenClaims.getSubject();
     }
 
 }

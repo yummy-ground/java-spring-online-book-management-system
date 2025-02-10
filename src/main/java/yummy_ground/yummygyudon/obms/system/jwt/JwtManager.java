@@ -1,20 +1,22 @@
 package yummy_ground.yummygyudon.obms.system.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.xml.bind.DatatypeConverter;
-import yummy_ground.yummygyudon.obms.support.constant.JwtConstant;
-
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Map;
+import java.util.Date;
+import java.time.ZoneId;
+import java.util.Base64;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import javax.crypto.spec.SecretKeySpec;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Map;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.xml.bind.DatatypeConverter;
+
+import yummy_ground.yummygyudon.obms.support.constant.JwtConstant;
 
 public abstract class JwtManager<T> {
     private static final String HEADER_KEY_ALGORITHM = "alg";
@@ -31,7 +33,6 @@ public abstract class JwtManager<T> {
         return Date.from(issuedDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
     protected Date createExpiration(long expiration) {
-
         LocalDateTime expiredDateTime = LocalDateTime.now().plusSeconds(expiration);
         return Date.from(expiredDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
@@ -43,7 +44,7 @@ public abstract class JwtManager<T> {
         return new SecretKeySpec(encodedKeyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
 
-    protected Claims getClaimsFromToken(String token, String key) {
+    protected Claims getClaimsFromToken(String token, String key) throws JwtException {
         Key signingKey = createSigningKey(key);
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
@@ -54,6 +55,6 @@ public abstract class JwtManager<T> {
 
     protected abstract String generate(T data);
 
-    protected abstract T parse(String token) throws IOException;
+    protected abstract T parse(String token) throws IOException, JwtException;
 
 }
