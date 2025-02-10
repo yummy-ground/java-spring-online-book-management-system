@@ -2,6 +2,7 @@ package yummy_ground.yummygyudon.obms.system.filter;
 
 import java.util.List;
 import java.io.IOException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.RequiredTypeException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -40,19 +42,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             ACTUATOR_URI_PREFIX, AUTH_URI_PREFIX, REISSUE_URI_PREFIX, OPEN_API_V3_URI_PREFIX, SWAGGER_URI_PREFIX
     );
     private static final String BEARER_PREFIX = "Bearer ";
-    private final AccessTokenManager tokenProvider;
+    private final AccessTokenManager tokenManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
             String accessToken = extractAccessToken(request);
-            CustomUserAuthentication authentication = tokenProvider.parse(accessToken);
+            CustomUserAuthentication authentication = tokenManager.parse(accessToken);
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             filterChain.doFilter(request, response);
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | RequiredTypeException e) {
             throw new AuthException(AuthError.UNINTENDED_PRINCIPAL);
         } catch (ExpiredJwtException e) {
             throw new AuthException(AuthError.EXPIRED_ACCESS_TOKEN);

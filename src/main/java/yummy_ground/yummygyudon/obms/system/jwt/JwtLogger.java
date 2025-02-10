@@ -11,6 +11,8 @@ import yummy_ground.yummygyudon.obms.system.auth.AccessTokenManager;
 import yummy_ground.yummygyudon.obms.system.auth.CustomUserAuthentication;
 import yummy_ground.yummygyudon.obms.system.auth.RefreshTokenManager;
 
+import java.util.UUID;
+
 @Slf4j
 @Profile("local")
 @Component
@@ -26,7 +28,7 @@ public class JwtLogger implements ApplicationRunner {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         log.info(LINE);
         showLogForAdmin();
         log.info(LINE);
@@ -35,7 +37,7 @@ public class JwtLogger implements ApplicationRunner {
     }
     private void showLogForAdmin() {
         String accessTokenForAdmin = accessTokenManager.generate(new CustomUserAuthentication(1, null));
-        String refreshTokenForAdmin = refreshTokenManager.generate(null);
+        String refreshTokenForAdmin = refreshTokenManager.generate(UUID.randomUUID().toString());
         log.info("> Admin (ID : 1) - Access Token : {}", accessTokenForAdmin);
         log.info("> Admin (ID : 1) - Refresh Token : {}", refreshTokenForAdmin);
         log.info("> Admin (ID : 1) - ID : {}", ADMIN_EMAIL);
@@ -43,7 +45,7 @@ public class JwtLogger implements ApplicationRunner {
     }
     private void showLogForUser() {
         String accessTokenForUser = accessTokenManager.generate(new CustomUserAuthentication(2, null));
-        String refreshTokenForUser = refreshTokenManager.generate(null);
+        String refreshTokenForUser = refreshTokenManager.generate(UUID.randomUUID().toString());
         log.info("> User (ID : 2) - Access Token : {}", accessTokenForUser);
         log.info("> User (ID : 2) - Refresh Token : {}", refreshTokenForUser);
         log.info("> User (ID : 2) - ID : {}", USER_EMAIL);
