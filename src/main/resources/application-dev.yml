@@ -6,3 +6,4 @@ spring:
       - optional:file:.env[.properties]
       - classpath:database.yml
       - classpath:jwt.yml
+      - classpath:docs.yml

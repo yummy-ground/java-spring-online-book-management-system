@@ -1,14 +1,13 @@
 package yummy_ground.yummygyudon.obms.system.filter;
 
-import java.util.List;
 import java.io.IOException;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.stereotype.Component;
@@ -28,19 +27,12 @@ import yummy_ground.yummygyudon.obms.support.exception.GlobalException;
 import yummy_ground.yummygyudon.obms.system.auth.AccessTokenManager;
 import yummy_ground.yummygyudon.obms.system.auth.CustomUserAuthentication;
 
-import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.ACTUATOR_URI_PREFIX;
-import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.AUTH_URI_PREFIX;
-import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.OPEN_API_V3_URI_PREFIX;
-import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.REISSUE_URI_PREFIX;
-import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.SWAGGER_URI_PREFIX;
+import static yummy_ground.yummygyudon.obms.support.constant.RequestConstant.WHITE_URI_PREFIX;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String HEADER_NAME_AUTHORIZATION = "Authorization";
-    private static final List<String> WHITE_URIS = List.of(
-            ACTUATOR_URI_PREFIX, AUTH_URI_PREFIX, REISSUE_URI_PREFIX, OPEN_API_V3_URI_PREFIX, SWAGGER_URI_PREFIX
-    );
     private static final String BEARER_PREFIX = "Bearer ";
     private final AccessTokenManager tokenManager;
 
@@ -73,8 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        System.out.println(request.getRequestURI());
-        return WHITE_URIS.stream().anyMatch(uri -> request.getRequestURI().contains(uri));
+        return WHITE_URI_PREFIX.stream().anyMatch(uri -> request.getRequestURI().contains(uri));
     }
 
     private String extractAccessToken(HttpServletRequest request) {

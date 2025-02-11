@@ -39,12 +39,13 @@ dependencies {
 
 	// system
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:3.4.2'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:0.11.2"
 	runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.11.2"
 
 	// docs
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
 	// etc
 	compileOnly 'org.projectlombok:lombok'

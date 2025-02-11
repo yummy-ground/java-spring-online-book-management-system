@@ -1,11 +1,13 @@
 package yummy_ground.yummygyudon.obms.support.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Builder;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static lombok.AccessLevel.PRIVATE;
 
+@Hidden
 @Builder(access = PRIVATE)
 public record BaseResponse<T> (
         String message,

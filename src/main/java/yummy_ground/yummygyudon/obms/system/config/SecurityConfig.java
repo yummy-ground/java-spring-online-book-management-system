@@ -25,7 +25,6 @@ public class SecurityConfig {
 
     private static final String SLASH = "/";
     private static final String WILDCARD_ALL = "**";
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
 
@@ -45,9 +44,8 @@ public class SecurityConfig {
     @Profile("local")
     public SecurityFilterChain filterChainForLocal(HttpSecurity http) throws Exception {
         setDefaultHttp(http);
-        addFilterOrInterceptor(http);
-
         http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests.anyRequest().permitAll());
+        addFilters(http);
         return http.build();
     }
 
@@ -55,10 +53,9 @@ public class SecurityConfig {
     @Profile("dev")
     public SecurityFilterChain filterChainForDevelopment(HttpSecurity http) throws Exception {
         setDefaultHttp(http);
-        setSecuredHttp(http);
         setApiSpecification(http);
-
-        addFilterOrInterceptor(http);
+        setSecuredHttp(http);
+        addFilters(http);
         return http.build();
     }
 
@@ -67,8 +64,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChainForProduction(HttpSecurity http) throws Exception {
         setDefaultHttp(http);
         setSecuredHttp(http);
-
-        addFilterOrInterceptor(http);
+        addFilters(http);
         return http.build();
     }
 
@@ -81,30 +77,26 @@ public class SecurityConfig {
     }
 
     private void setSecuredHttp(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                authorizeHttpRequests ->
-                        authorizeHttpRequests
-                                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.AUTH_URI_PREFIX, WILDCARD_ALL)))
-                                .permitAll()
-                                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.REISSUE_URI_PREFIX, WILDCARD_ALL)))
-                                .permitAll()
-                                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.ACTUATOR_URI_PREFIX, WILDCARD_ALL)))
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated());
-
-    }
-
-    private void addFilterOrInterceptor(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+        http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.AUTH_URI_PREFIX, WILDCARD_ALL)))
+                .permitAll()
+                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.REISSUE_URI_PREFIX, WILDCARD_ALL)))
+                .permitAll()
+                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.ACTUATOR_URI_PREFIX, WILDCARD_ALL)))
+                .permitAll()
+                .anyRequest()
+                .authenticated());
     }
 
     private void setApiSpecification(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.OPEN_API_V3_URI_PREFIX, WILDCARD_ALL)))
-                .permitAll()
-                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.SWAGGER_URI_PREFIX, WILDCARD_ALL)))
+                .requestMatchers(new AntPathRequestMatcher(String.join(SLASH, RequestConstant.API_DOCS_URI_PREFIX, WILDCARD_ALL)))
                 .permitAll());
     }
+
+    private void addFilters(HttpSecurity http) {
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+    }
+
 }

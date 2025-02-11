@@ -1,0 +1,14 @@
+springdoc:
+  info:
+    version: v1.0.0
+    title: Online Book Management System API
+    description: 온라인 도서 관리 시스템 API 문서
+  api-docs:
+    version: openapi_3_0
+    path: /api-docs
+  swagger-ui:
+    path: /api-docs/ui
+---
+spring.config.activate.on-profile: local
+springdoc:
+  show-actuator: true

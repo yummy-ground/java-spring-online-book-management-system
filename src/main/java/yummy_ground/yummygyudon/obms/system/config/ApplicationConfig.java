@@ -9,13 +9,15 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import yummy_ground.yummygyudon.obms.system.value.DocsProperty;
 import yummy_ground.yummygyudon.obms.system.value.JwtProperty;
 import yummy_ground.yummygyudon.obms.system.resolver.UserIdentityArgumentResolver;
 
 @Configuration(value = "CustomApplicationConfig")
 @ConfigurationPropertiesScan(basePackages = "yummy_ground.yummygyudon.obms.system.value")
 @EnableConfigurationProperties({
-        JwtProperty.class
+        JwtProperty.class,
+        DocsProperty.class
 })
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
