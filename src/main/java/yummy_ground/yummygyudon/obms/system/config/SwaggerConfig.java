@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -20,6 +21,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springdoc.core.customizers.OperationCustomizer;
 
 import yummy_ground.yummygyudon.obms.system.value.DocsProperty;
+
+import java.util.List;
 
 
 @Configuration
@@ -87,7 +90,8 @@ public class SwaggerConfig {
     public OpenAPI openAPIForLocal() {
         return new OpenAPI(SpecVersion.V30)
                 .components(new Components())
-                .info(apiInfo());
+                .info(apiInfo())
+                .servers(List.of(new Server().url(docsProperty.info().serverUrl())));
     }
 
     @Bean
@@ -97,7 +101,8 @@ public class SwaggerConfig {
                 .components(new Components())
                 .info(apiInfo())
                 .addSecurityItem(securityForJwt())
-                .components(securityComponentForJwt());
+                .components(securityComponentForJwt())
+                .servers(List.of(new Server().url(docsProperty.info().serverUrl())));
     }
 
     private Info apiInfo() {

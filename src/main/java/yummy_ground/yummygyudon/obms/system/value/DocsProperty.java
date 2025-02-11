@@ -12,7 +12,8 @@ public record DocsProperty (
     public record Info(
             String version,
             String title,
-            String description
+            String description,
+            String serverUrl
     ) {}
 
     @ConfigurationProperties(prefix = "api-docs")
