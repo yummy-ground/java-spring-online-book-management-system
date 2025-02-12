@@ -26,14 +26,14 @@ public interface RentalApi {
     @Operation(
             summary = "대여 등록",
             requestBody = @RequestBody(
-                    content = @Content(schema = @Schema(implementation = RentalRequest.Register.class))
+                    content = @Content(schema = @Schema(implementation = RentalRequest.RentalCreate.class))
             )
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "등록 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = RentalResponse.Register.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = RentalResponse.RentalRegister.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -44,7 +44,7 @@ public interface RentalApi {
                     description = "미인증 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<RentalResponse.Register>> rent(RentalRequest.Register newRental);
+    ResponseEntity<BaseResponse<?>> rent(RentalRequest.RentalCreate newRental);
 
     @Operation(
             summary = "대여 상태 조회"
@@ -53,7 +53,7 @@ public interface RentalApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = RentalResponse.Status.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = RentalResponse.RentalStatus.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -68,7 +68,7 @@ public interface RentalApi {
                     description = "존재하지 않는 대여 이력"
             )
     })
-    ResponseEntity<BaseResponse<RentalResponse.Status>> isRentalExistOf(long bookId);
+    ResponseEntity<BaseResponse<?>> isRentalExistOf(long bookId);
 
     @Operation(
             summary = "대여 삭제(반납)"

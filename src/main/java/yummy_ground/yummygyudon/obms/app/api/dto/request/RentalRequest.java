@@ -1,11 +1,16 @@
 package yummy_ground.yummygyudon.obms.app.api.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.RequiredArgsConstructor;
+
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
+
+import yummy_ground.yummygyudon.obms.app.service.RentalService;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -13,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 public final class RentalRequest {
 
     @Schema(title = "대여 등록 요청")
-    public record Register(
+    public record RentalCreate(
             @Schema(description = "대여자 ID")
             @Min(value = 1, message = "대여자 ID는 1보다 작을 수 없습니다.")
             @NotBlank(message = "대여자 ID를 입력해야 합니다.")
@@ -30,6 +35,16 @@ public final class RentalRequest {
             @NotBlank(message = "대여 일수를 입력해야 합니다.")
             @JsonProperty(value = "rent_day", required = true)
             int rentDays
-    ){}
+    ){
+
+            public RentalService.RegisterCommand toCommand() {
+                    return new RentalService.RegisterCommand(
+                            this.bookId,
+                            this.userId,
+                            this.rentDays
+                    );
+            }
+
+    }
 
 }
