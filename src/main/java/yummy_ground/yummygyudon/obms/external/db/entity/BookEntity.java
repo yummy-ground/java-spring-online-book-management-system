@@ -7,13 +7,12 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.OneToMany;
 
+import yummy_ground.yummygyudon.obms.app.domain.Book;
 import yummy_ground.yummygyudon.obms.support.db.StringListConverter;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -24,7 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(schema = "book_management_system", name = "books")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(access = PRIVATE)
 public class BookEntity extends BaseEntity {
 
     @Column(name = "title", nullable = false)
@@ -40,10 +38,34 @@ public class BookEntity extends BaseEntity {
     @Column(name = "publish_at", nullable = false)
     private LocalDate publishDate;
 
-    @Column(name = "is_rented", nullable = false)
-    private boolean isRented;
+    @Builder(access = PRIVATE)
+    public BookEntity(Long id, String title, String author, List<String> tags, LocalDate publishDate) {
+        setId(id);
+        this.title = title;
+        this.author = author;
+        this.tags = tags;
+        this.publishDate = publishDate;
+    }
 
-    @OneToMany(targetEntity = RentalEntity.class, mappedBy = "book")
-    private List<RentalEntity> rentals = new ArrayList<>();
+    public Book toDomain() {
+        return Book.of(
+                this.getId(),
+                this.getTitle(),
+                this.getAuthor(),
+                this.getTags(),
+                this.getPublishDate(),
+                this.getCreatedDate().toLocalDate(),
+                this.getUpdatedDate().toLocalDate()
+        );
+    }
 
+    public static BookEntity fromDomain(Book book) {
+        return BookEntity.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .tags(book.getTags())
+                .publishDate(book.getPublishAt())
+                .build();
+    }
 }

@@ -29,14 +29,14 @@ public interface BookApi {
     @Operation(
             summary = "도서 등록",
             requestBody = @RequestBody(
-                    content = @Content(schema = @Schema(implementation = BookRequest.Register.class))
+                    content = @Content(schema = @Schema(implementation = BookRequest.BookRegister.class))
             )
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "등록 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.Detail.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.BookDetail.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -47,7 +47,7 @@ public interface BookApi {
                     description = "미인증 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<BookResponse.Detail>> register(BookRequest.Register newBook);
+    ResponseEntity<BaseResponse<?>> register(BookRequest.BookRegister newBook);
 
     @Operation(
             summary = "도서 상세 조회"
@@ -56,7 +56,7 @@ public interface BookApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.Detail.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.BookDetail.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -71,7 +71,7 @@ public interface BookApi {
                     description = "존재하지 않는 도서"
             )
     })
-    ResponseEntity<BaseResponse<BookResponse.Detail>> getDetail(long bookId);
+    ResponseEntity<BaseResponse<?>> getDetail(long bookId);
 
     @Operation(
             summary = "도서 목록 조회"
@@ -80,7 +80,7 @@ public interface BookApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.All.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = BookResponse.BookAll.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -91,12 +91,12 @@ public interface BookApi {
                     description = "미인증 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<List<BookResponse.Detail>>> getAll(String targetTitle, String targetAuthor, String sortBy, @Schema(hidden = true) Pageable pageable);
+    ResponseEntity<BaseResponse<?>> getAll(String targetTitle, String targetAuthor, String sortBy, @Schema(hidden = true) Pageable pageable);
 
     @Operation(
             summary = "도서 수정",
             requestBody = @RequestBody(
-                    content = @Content(schema = @Schema(implementation = BookRequest.Update.class))
+                    content = @Content(schema = @Schema(implementation = BookRequest.BookUpdate.class))
             )
     )
     @ApiResponses(value = {
@@ -122,7 +122,7 @@ public interface BookApi {
                     description = "존재하지 않는 도서"
             )
     })
-    ResponseEntity<BaseResponse<?>> update(long bookId, BookRequest.Update updatedBook);
+    ResponseEntity<BaseResponse<?>> update(long bookId, BookRequest.BookUpdate updatedBook);
 
     @Operation(
             summary = "도서 삭제"

@@ -32,4 +32,8 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedDate;
 
+    protected void setId(Long id) {
+        this.id = id;
+    }
+
 }
