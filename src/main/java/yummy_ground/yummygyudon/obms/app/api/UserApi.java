@@ -1,7 +1,5 @@
 package yummy_ground.yummygyudon.obms.app.api;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,14 +27,14 @@ public interface UserApi {
     @Operation(
             summary = "사용자 등록",
             requestBody = @RequestBody(
-                    content = @Content(schema = @Schema(implementation = UserRequest.Register.class))
+                    content = @Content(schema = @Schema(implementation = UserRequest.UserRegister.class))
             )
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "등록 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.Detail.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.UserDetail.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -55,7 +53,7 @@ public interface UserApi {
                     description = "등록 권한이 없는 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<UserResponse.Detail>> register(UserRequest.Register newUser);
+    ResponseEntity<BaseResponse<?>> register(UserRequest.UserRegister newUser);
 
     @Operation(
             summary = "사용자 상세 조회(ID 기반)"
@@ -64,7 +62,7 @@ public interface UserApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.Detail.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.UserDetail.class))
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -79,7 +77,7 @@ public interface UserApi {
                     description = "존재하지 않는 사용자"
             )
     })
-    ResponseEntity<BaseResponse<UserResponse.Detail>> getDetail(long userId);
+    ResponseEntity<BaseResponse<?>> getDetail(long userId);
 
     @Operation(
             summary = "사용자 상세 조회(본인)"
@@ -88,14 +86,14 @@ public interface UserApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.Detail.class))
+                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.UserDetail.class, exampleClasses = UserResponse.UserDetail.class))
             ),
             @ApiResponse(
                     responseCode = "401",
                     description = "미인증 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<UserResponse.Detail>> getMyDetail(long userId);
+    ResponseEntity<BaseResponse<?>> getMyDetail(@Schema(hidden = true) long userId);
 
     @Operation(
             summary = "사용자 목록 조회"
@@ -104,13 +102,22 @@ public interface UserApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-                    content = @Content(schema = @Schema(contentMediaType = "application/json", implementation = UserResponse.All.class))
+
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = UserResponse.UserAll.class,
+                                    exampleClasses = UserResponse.UserAll.class
+//                                    arraySchema = @Schema(ref = ""),
+//                                    schema = @Schema(ref = "#/components/schemas/UserResponse.All")
+                            )) // implementation = UserResponse.All.class
+//                        schema = @Schema(implementation = UserResponse.All.class))
             ),
             @ApiResponse(
                     responseCode = "401",
                     description = "미인증 사용자의 요청"
             )
     })
-    ResponseEntity<BaseResponse<List<UserResponse.Detail>>> getAll();
+    ResponseEntity<BaseResponse<?>> getAll();
 
 }
