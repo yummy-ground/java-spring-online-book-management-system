@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AccessTokenManager tokenManager;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException {
         try {
             String accessToken = extractAccessToken(request);
             CustomUserAuthentication authentication = tokenManager.parse(accessToken);
@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new AuthException(AuthError.INVALID_SIGNATURE_ACCESS_TOKEN);
         } catch (IllegalArgumentException e) {
             throw new AuthException(AuthError.EMPTY_ACCESS_TOKEN);
-        } catch (ServletException | IOException exception) {
+        } catch (IOException exception) {
             throw new GlobalException(GlobalError.INTERNAL_SERVER_ERROR_IN_FILTER);
         }
     }
