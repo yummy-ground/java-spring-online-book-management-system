@@ -24,9 +24,10 @@ public enum AuthError implements ErrorCode {
     UNSUPPORTED_FORMAT_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "지원하지 않는 갱신 토큰의 형식입니다."),
     EMPTY_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "액세스 토큰이 비어있습니다."),
     EMPTY_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "갱신 토큰이 비어있습니다."),
+    NO_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "갱신 토큰이 존재하지 않습니다."),
     INVALID_SIGNATURE_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "액세스 토큰의 서명이 유효하지 않습니다."),
     INVALID_SIGNATURE_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "갱신 토큰의 서명이 유효하지 않습니다."),
-
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "잘못된 비밀번호입니다."),
     ;
     private final HttpStatus status;
     private final String message;

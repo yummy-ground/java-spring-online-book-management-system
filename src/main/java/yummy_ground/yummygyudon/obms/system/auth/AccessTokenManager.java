@@ -26,7 +26,7 @@ public class AccessTokenManager extends JwtManager<CustomUserAuthentication> {
         long expiration = Long.parseLong(jwtProperty.expiration().accessToken());
         return Jwts.builder()
                 .setHeader(createHeader())
-                .claim(CLAIM_KEY_USER_ID, String.valueOf(authentication.getPrincipal()))
+                .claim(CLAIM_KEY_USER_ID, authentication.getPrincipal())
                 .setIssuer(issuer)
                 .setIssuedAt(createIssuedAt())
                 .setExpiration(createExpiration(expiration))
@@ -39,8 +39,8 @@ public class AccessTokenManager extends JwtManager<CustomUserAuthentication> {
         String key = jwtProperty.secret().accessToken();
         Claims claims = getClaimsFromToken(token, key);
 
-        long userId = claims.get(CLAIM_KEY_USER_ID, Long.class);
-        return new CustomUserAuthentication(userId, null);
+        Long userId = claims.get(CLAIM_KEY_USER_ID, Long.class);
+        return new CustomUserAuthentication(userId, null, null);
     }
 
 }

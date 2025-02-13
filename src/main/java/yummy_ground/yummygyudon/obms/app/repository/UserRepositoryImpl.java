@@ -1,15 +1,17 @@
 package yummy_ground.yummygyudon.obms.app.repository;
 
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import yummy_ground.yummygyudon.obms.app.domain.User;
 import yummy_ground.yummygyudon.obms.external.db.entity.UserEntity;
 import yummy_ground.yummygyudon.obms.external.db.repository.jpa.UserJpaRepository;
 import yummy_ground.yummygyudon.obms.support.code.error.UserError;
 import yummy_ground.yummygyudon.obms.support.exception.UserException;
-
-import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -27,6 +29,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findById(long id) {
         UserEntity findUserEntity = jpaRepository.findById(id)
+                .orElseThrow(() -> new UserException(UserError.NOT_FOUND_USER));
+
+        return findUserEntity.toDomain();
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        UserEntity findUserEntity = jpaRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserError.NOT_FOUND_USER));
 
         return findUserEntity.toDomain();

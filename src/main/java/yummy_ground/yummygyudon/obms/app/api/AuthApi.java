@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 import yummy_ground.yummygyudon.obms.support.dto.BaseResponse;
@@ -27,7 +28,7 @@ public interface AuthApi {
     @Operation(
             summary = "신규 인증 및 AccessToken 발급",
             requestBody = @RequestBody(
-                    content = @Content(schema = @Schema(implementation = AuthRequest.Authentication.class))
+                    content = @Content(schema = @Schema(implementation = AuthRequest.AuthenticationInfo.class))
             )
     )
     @SecurityRequirements(value = {})
@@ -50,7 +51,7 @@ public interface AuthApi {
                     description = "존재하지 않는 사용자"
             )
     })
-    ResponseEntity<BaseResponse<AuthResponse.Authorization>> auth(AuthRequest.Authentication authentication);
+    ResponseEntity<BaseResponse<?>> auth(AuthRequest.AuthenticationInfo authentication, @Schema(hidden = true) HttpServletResponse response);
 
 
     @Operation(
@@ -72,5 +73,5 @@ public interface AuthApi {
                     description = "유효하지 않거나 만료된 Refresh Token / 등록되지 않은 Refresh Token"
             )
     })
-    ResponseEntity<BaseResponse<AuthResponse.Authorization>> refresh(String refreshToken);
+    ResponseEntity<BaseResponse<?>> refresh(String refreshToken, @Schema(hidden = true) HttpServletResponse response);
 }

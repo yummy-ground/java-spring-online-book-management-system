@@ -33,7 +33,7 @@ public class RefreshTokenManager extends JwtManager<String> {
 
     @Override
     public String parse(String token) throws JwtException {
-        String key = jwtProperty.secret().accessToken();
+        String key = jwtProperty.secret().refreshToken();
         Claims tokenClaims = getClaimsFromToken(token, key);
 
         return tokenClaims.getSubject();

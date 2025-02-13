@@ -1,8 +1,12 @@
 package yummy_ground.yummygyudon.obms.app.api.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import yummy_ground.yummygyudon.obms.app.domain.AuthTokenPair;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -17,6 +21,13 @@ public final class AuthResponse {
             @Schema(description = "토큰 타입", example = "Bearer")
             @JsonProperty(value = "token_type", defaultValue = "Bearer")
             String tokenType
-    ){}
+    ){
+        public static Authorization from(AuthTokenPair tokenPair) {
+            return new Authorization(
+                    tokenPair.getAccessToken().getToken(),
+                    tokenPair.getAccessToken().getType()
+            );
+        }
+    }
 
 }
