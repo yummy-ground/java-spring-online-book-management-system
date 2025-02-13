@@ -91,6 +91,8 @@ public class SwaggerConfig {
         return new OpenAPI(SpecVersion.V30)
                 .components(new Components())
                 .info(apiInfo())
+                .addSecurityItem(securityForJwt())
+                .components(securityComponentForJwt())
                 .servers(List.of(new Server().url(docsProperty.info().serverUrl())));
     }
 
@@ -105,7 +107,7 @@ public class SwaggerConfig {
                 .servers(List.of(new Server().url(docsProperty.info().serverUrl())));
     }
 
-    private Info apiInfo() {
+    Info apiInfo() {
         return new Info()
                 .title(docsProperty.info().title())
                 .description(docsProperty.info().description())

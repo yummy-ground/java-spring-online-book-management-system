@@ -102,16 +102,13 @@ public interface UserApi {
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
-
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(
                                     implementation = UserResponse.UserAll.class,
                                     exampleClasses = UserResponse.UserAll.class
-//                                    arraySchema = @Schema(ref = ""),
-//                                    schema = @Schema(ref = "#/components/schemas/UserResponse.All")
-                            )) // implementation = UserResponse.All.class
-//                        schema = @Schema(implementation = UserResponse.All.class))
+                            )
+                    )
             ),
             @ApiResponse(
                     responseCode = "401",
