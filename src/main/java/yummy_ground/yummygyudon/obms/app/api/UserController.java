@@ -29,11 +29,7 @@ public class UserController implements UserApi {
         UserService.RegisterCommand userRegisterCommand = newUser.toCommand();
         User savedUser = userService.registerUser(userRegisterCommand);
         UserResponse.UserDetail result = UserResponse.UserDetail.from(savedUser);
-        return ApiResponseUtil
-                .successContent(
-                        UserSuccess.REGISTER_USER,
-                        BaseResponse.of(UserSuccess.REGISTER_USER.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(UserSuccess.REGISTER_USER, result);
     }
 
     @Override
@@ -41,13 +37,10 @@ public class UserController implements UserApi {
     public ResponseEntity<BaseResponse<?>> getDetail(
             @PathVariable("userId") long userId
     ) {
+        System.out.println(userId);
         User user = userService.findUser(userId);
         UserResponse.UserDetail result = UserResponse.UserDetail.from(user);
-        return ApiResponseUtil
-                .successContent(
-                        UserSuccess.GET_USER,
-                        BaseResponse.of(UserSuccess.GET_USER.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(UserSuccess.GET_USER, result);
     }
 
     @Override
@@ -57,11 +50,7 @@ public class UserController implements UserApi {
     ) {
         User user = userService.findUser(userId);
         UserResponse.UserDetail result = UserResponse.UserDetail.from(user);
-        return ApiResponseUtil
-                .successContent(
-                        UserSuccess.GET_USER,
-                        BaseResponse.of(UserSuccess.GET_USER.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(UserSuccess.GET_USER, result);
     }
 
     @Override
@@ -69,11 +58,7 @@ public class UserController implements UserApi {
     public ResponseEntity<BaseResponse<?>> getAll() {
         List<User> users = userService.findUsers();
         UserResponse.UserAll result = UserResponse.UserAll.from(users);
-        return ApiResponseUtil
-                .successContent(
-                        UserSuccess.GET_USERS,
-                        BaseResponse.of(UserSuccess.GET_USERS.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(UserSuccess.GET_USERS, result);
     }
 
 }

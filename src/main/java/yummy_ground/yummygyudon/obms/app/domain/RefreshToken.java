@@ -1,10 +1,9 @@
 package yummy_ground.yummygyudon.obms.app.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import static lombok.AccessLevel.PRIVATE;
 

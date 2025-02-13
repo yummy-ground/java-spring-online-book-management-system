@@ -29,11 +29,7 @@ public class BookController implements BookApi {
     ) {
         Book savedBook = bookService.registerBook(newBook.toCommand());
         BookResponse.BookDetail result = BookResponse.BookDetail.from(savedBook);
-        return ApiResponseUtil
-                .successContent(
-                        BookSuccess.REGISTER_BOOK,
-                        BaseResponse.of(BookSuccess.REGISTER_BOOK.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(BookSuccess.REGISTER_BOOK, result);
     }
 
     @Override
@@ -43,11 +39,7 @@ public class BookController implements BookApi {
     ) {
         Book findBook = bookService.findBook(bookId);
         BookResponse.BookDetail result = BookResponse.BookDetail.from(findBook);
-        return ApiResponseUtil
-                .successContent(
-                        BookSuccess.GET_BOOK,
-                        BaseResponse.of(BookSuccess.GET_BOOK.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(BookSuccess.GET_BOOK, result);
     }
 
     @Override
@@ -60,11 +52,7 @@ public class BookController implements BookApi {
     ) {
         List<Book> books = bookService.findAllBooks();
         BookResponse.BookAll result = BookResponse.BookAll.from(books);
-        return ApiResponseUtil
-                .successContent(
-                        BookSuccess.GET_BOOKS,
-                        BaseResponse.of(BookSuccess.GET_BOOKS.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(BookSuccess.GET_BOOKS, result);
     }
 
     @Override

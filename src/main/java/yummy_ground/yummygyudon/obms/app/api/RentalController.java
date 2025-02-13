@@ -35,11 +35,7 @@ public class RentalController implements RentalApi {
     ) {
         Rental rental = rentalService.startRental(newRental.toCommand());
         RentalResponse.RentalRegister result = RentalResponse.RentalRegister.from(rental);
-        return ApiResponseUtil
-                .successContent(
-                        RentalSuccess.REGISTER_RENTAL,
-                        BaseResponse.of(RentalSuccess.REGISTER_RENTAL.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(RentalSuccess.REGISTER_RENTAL, result);
     }
 
     @Override
@@ -49,11 +45,7 @@ public class RentalController implements RentalApi {
     ) {
         boolean bookOnRent = rentalService.isBookOnRent(bookId);
         RentalResponse.RentalStatus result = new RentalResponse.RentalStatus(bookOnRent);
-        return ApiResponseUtil
-                .successContent(
-                        RentalSuccess.GET_RENTAL_STATUS,
-                        BaseResponse.of(RentalSuccess.GET_RENTAL_STATUS.getMessage(), result)
-                );
+        return ApiResponseUtil.successContent(RentalSuccess.GET_RENTAL_STATUS, result);
     }
 
     @Override
