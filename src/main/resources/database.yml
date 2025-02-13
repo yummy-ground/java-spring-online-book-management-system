@@ -34,7 +34,6 @@ spring:
       mode: always
       username: ${DB_USERNAME}
       password: ${DB_PASSWORD}
-      data-locations: classpath:sql/init_data.sql
 
 ---
 spring.config.activate.on-profile: test
